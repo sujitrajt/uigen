@@ -14,6 +14,7 @@ import { CodeEditor } from "@/components/editor/CodeEditor";
 import { PreviewFrame } from "@/components/preview/PreviewFrame";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HeaderActions } from "@/components/HeaderActions";
+import { Sparkles } from "lucide-react";
 
 interface MainContentProps {
   user?: {
@@ -36,14 +37,19 @@ export function MainContent({ user, project }: MainContentProps) {
   return (
     <FileSystemProvider initialData={project?.data}>
       <ChatProvider projectId={project?.id} initialMessages={project?.messages}>
-        <div className="h-screen w-screen overflow-hidden bg-neutral-50">
+        <div className="h-screen w-screen overflow-hidden bg-[#0a0a0b]">
           <ResizablePanelGroup direction="horizontal" className="h-full">
             {/* Left Panel - Chat */}
             <ResizablePanel defaultSize={35} minSize={25} maxSize={50}>
-              <div className="h-full flex flex-col bg-white">
+              <div className="h-full flex flex-col bg-[#0f0f11]">
                 {/* Chat Header */}
-                <div className="h-14 flex items-center px-6 border-b border-neutral-200/60">
-                  <h1 className="text-lg font-semibold text-neutral-900 tracking-tight">React Component Generator</h1>
+                <div className="h-14 flex items-center px-5 border-b border-white/[0.06]">
+                  <div className="flex items-center gap-2.5">
+                    <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 shadow-lg shadow-violet-500/20">
+                      <Sparkles className="h-3.5 w-3.5 text-white" />
+                    </div>
+                    <span className="text-[15px] font-semibold text-white/90 tracking-tight">UIGen</span>
+                  </div>
                 </div>
 
                 {/* Chat Content */}
@@ -53,29 +59,39 @@ export function MainContent({ user, project }: MainContentProps) {
               </div>
             </ResizablePanel>
 
-            <ResizableHandle className="w-[1px] bg-neutral-200 hover:bg-neutral-300 transition-colors" />
+            <ResizableHandle className="w-px bg-white/[0.06] hover:bg-white/10 transition-colors" />
 
             {/* Right Panel - Preview/Code */}
             <ResizablePanel defaultSize={65}>
-              <div className="h-full flex flex-col bg-white">
+              <div className="h-full flex flex-col bg-[#f8f8f9]">
                 {/* Top Bar */}
-                <div className="h-14 border-b border-neutral-200/60 px-6 flex items-center justify-between bg-neutral-50/50">
+                <div className="h-14 border-b border-neutral-200/70 px-5 flex items-center justify-between bg-white/80 backdrop-blur-sm">
                   <Tabs
                     value={activeView}
                     onValueChange={(v) =>
                       setActiveView(v as "preview" | "code")
                     }
                   >
-                    <TabsList className="bg-white/60 border border-neutral-200/60 p-0.5 h-9 shadow-sm">
-                      <TabsTrigger value="preview" className="data-[state=active]:bg-white data-[state=active]:text-neutral-900 data-[state=active]:shadow-sm text-neutral-600 px-4 py-1.5 text-sm font-medium transition-all">Preview</TabsTrigger>
-                      <TabsTrigger value="code" className="data-[state=active]:bg-white data-[state=active]:text-neutral-900 data-[state=active]:shadow-sm text-neutral-600 px-4 py-1.5 text-sm font-medium transition-all">Code</TabsTrigger>
+                    <TabsList className="bg-neutral-100 border border-neutral-200/60 p-0.5 h-8 gap-0.5">
+                      <TabsTrigger
+                        value="preview"
+                        className="data-[state=active]:bg-white data-[state=active]:text-neutral-900 data-[state=active]:shadow-sm text-neutral-500 px-4 py-1 text-[13px] font-medium transition-all rounded-md"
+                      >
+                        Preview
+                      </TabsTrigger>
+                      <TabsTrigger
+                        value="code"
+                        className="data-[state=active]:bg-white data-[state=active]:text-neutral-900 data-[state=active]:shadow-sm text-neutral-500 px-4 py-1 text-[13px] font-medium transition-all rounded-md"
+                      >
+                        Code
+                      </TabsTrigger>
                     </TabsList>
                   </Tabs>
                   <HeaderActions user={user} projectId={project?.id} />
                 </div>
 
                 {/* Content Area */}
-                <div className="flex-1 overflow-hidden bg-neutral-50">
+                <div className="flex-1 overflow-hidden">
                   {activeView === "preview" ? (
                     <div className="h-full bg-white">
                       <PreviewFrame />
@@ -91,12 +107,12 @@ export function MainContent({ user, project }: MainContentProps) {
                         minSize={20}
                         maxSize={50}
                       >
-                        <div className="h-full bg-neutral-50 border-r border-neutral-200">
+                        <div className="h-full bg-[#f8f8f9] border-r border-neutral-200">
                           <FileTree />
                         </div>
                       </ResizablePanel>
 
-                      <ResizableHandle className="w-[1px] bg-neutral-200 hover:bg-neutral-300 transition-colors" />
+                      <ResizableHandle className="w-px bg-neutral-200 hover:bg-neutral-300 transition-colors" />
 
                       {/* Code Editor */}
                       <ResizablePanel defaultSize={70}>

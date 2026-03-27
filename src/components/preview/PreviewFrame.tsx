@@ -6,7 +6,7 @@ import {
   createImportMap,
   createPreviewHTML,
 } from "@/lib/transform/jsx-transformer";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Sparkles } from "lucide-react";
 
 export function PreviewFrame() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -20,12 +20,10 @@ export function PreviewFrame() {
       try {
         const files = getAllFiles();
 
-        // Clear error first when we have files
         if (files.size > 0 && error) {
           setError(null);
         }
 
-        // Find the entry point - look for App.jsx, App.tsx, index.jsx, or index.tsx
         let foundEntryPoint = entryPoint;
         const possibleEntries = [
           "/App.jsx",
@@ -42,7 +40,6 @@ export function PreviewFrame() {
             foundEntryPoint = found;
             setEntryPoint(found);
           } else if (files.size > 0) {
-            // Just use the first .jsx/.tsx file found
             const firstJSX = Array.from(files.keys()).find(
               (path) => path.endsWith(".jsx") || path.endsWith(".tsx")
             );
@@ -62,7 +59,6 @@ export function PreviewFrame() {
           return;
         }
 
-        // We have files, so it's no longer the first load
         if (isFirstLoad) {
           setIsFirstLoad(false);
         }
@@ -79,14 +75,11 @@ export function PreviewFrame() {
 
         if (iframeRef.current) {
           const iframe = iframeRef.current;
-
-          // Need both allow-scripts and allow-same-origin for blob URLs in import map
           iframe.setAttribute(
             "sandbox",
             "allow-scripts allow-same-origin allow-forms"
           );
           iframe.srcdoc = previewHTML;
-
           setError(null);
         }
       } catch (err) {
@@ -101,31 +94,22 @@ export function PreviewFrame() {
   if (error) {
     if (error === "firstLoad") {
       return (
-        <div className="h-full flex items-center justify-center p-8 bg-gray-50">
-          <div className="text-center max-w-md">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 mb-4">
-              <svg
-                className="h-8 w-8 text-blue-600"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
+        <div className="h-full flex items-center justify-center p-8 bg-[#fafafa]">
+          <div className="text-center max-w-sm">
+            <div className="relative inline-flex mb-6">
+              <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-600 shadow-2xl shadow-violet-500/25">
+                <Sparkles className="h-7 w-7 text-white" />
+              </div>
+              <div className="absolute -inset-2 rounded-3xl bg-gradient-to-br from-violet-500/10 to-indigo-600/10 blur-xl -z-10" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Welcome to UI Generator
+            <h3 className="text-[17px] font-semibold text-neutral-800 mb-2 tracking-tight">
+              Your canvas is ready
             </h3>
-            <p className="text-sm text-gray-600 mb-3">
-              Start building React components with AI assistance
+            <p className="text-sm text-neutral-500 mb-1">
+              Describe a component in the chat
             </p>
-            <p className="text-xs text-gray-500">
-              Ask the AI to create your first component to see it live here
+            <p className="text-xs text-neutral-400">
+              The live preview will appear here instantly
             </p>
           </div>
         </div>
@@ -133,18 +117,15 @@ export function PreviewFrame() {
     }
 
     return (
-      <div className="h-full flex items-center justify-center p-8 bg-gray-50">
-        <div className="text-center max-w-md">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
-            <AlertCircle className="h-8 w-8 text-gray-400" />
+      <div className="h-full flex items-center justify-center p-8 bg-[#fafafa]">
+        <div className="text-center max-w-sm">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-neutral-100 mb-5">
+            <AlertCircle className="h-6 w-6 text-neutral-400" />
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <h3 className="text-[15px] font-semibold text-neutral-700 mb-2">
             No Preview Available
           </h3>
-          <p className="text-sm text-gray-500">{error}</p>
-          <p className="text-xs text-gray-400 mt-2">
-            Start by creating a React component using the AI assistant
-          </p>
+          <p className="text-sm text-neutral-400">{error}</p>
         </div>
       </div>
     );

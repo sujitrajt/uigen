@@ -46,7 +46,6 @@ export function HeaderActions({ user, projectId }: HeaderActionsProps) {
   const [initialLoading, setInitialLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Load projects initially
   useEffect(() => {
     if (user && projectId) {
       getProjects()
@@ -56,7 +55,6 @@ export function HeaderActions({ user, projectId }: HeaderActionsProps) {
     }
   }, [user, projectId]);
 
-  // Refresh projects when popover opens
   useEffect(() => {
     if (user && projectsOpen) {
       getProjects().then(setProjects).catch(console.error);
@@ -96,10 +94,19 @@ export function HeaderActions({ user, projectId }: HeaderActionsProps) {
     return (
       <>
         <div className="flex gap-2">
-          <Button variant="outline" className="h-8" onClick={handleSignInClick}>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8 text-[13px] font-medium border-neutral-200 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50"
+            onClick={handleSignInClick}
+          >
             Sign In
           </Button>
-          <Button className="h-8" onClick={handleSignUpClick}>
+          <Button
+            size="sm"
+            className="h-8 text-[13px] font-medium bg-neutral-900 text-white hover:bg-neutral-800 shadow-sm"
+            onClick={handleSignUpClick}
+          >
             Sign Up
           </Button>
         </div>
@@ -117,13 +124,20 @@ export function HeaderActions({ user, projectId }: HeaderActionsProps) {
       {!initialLoading && (
         <Popover open={projectsOpen} onOpenChange={setProjectsOpen}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="h-8 gap-2" role="combobox">
-              <FolderOpen className="h-4 w-4" />
-              {currentProject ? currentProject.name : "Select Project"}
-              <ChevronDown className="h-3 w-3 opacity-50" />
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 gap-1.5 text-[13px] font-medium border-neutral-200 text-neutral-600 hover:text-neutral-900 max-w-[180px]"
+              role="combobox"
+            >
+              <FolderOpen className="h-3.5 w-3.5 shrink-0" />
+              <span className="truncate">
+                {currentProject ? currentProject.name : "Select Project"}
+              </span>
+              <ChevronDown className="h-3 w-3 opacity-40 shrink-0" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-[300px] p-0" align="end">
+          <PopoverContent className="w-[280px] p-0" align="end">
             <Command>
               <CommandInput
                 placeholder="Search projects..."
@@ -143,9 +157,7 @@ export function HeaderActions({ user, projectId }: HeaderActionsProps) {
                         setSearchQuery("");
                       }}
                     >
-                      <div className="flex flex-col">
-                        <span className="font-medium">{project.name}</span>
-                      </div>
+                      <span className="font-medium text-[13px]">{project.name}</span>
                     </CommandItem>
                   ))}
                 </CommandGroup>
@@ -155,19 +167,23 @@ export function HeaderActions({ user, projectId }: HeaderActionsProps) {
         </Popover>
       )}
 
-      <Button className="flex items-center gap-2 h-8" onClick={handleNewDesign}>
-        <Plus className="h-4 w-4" />
-        New Design
+      <Button
+        size="sm"
+        className="h-8 gap-1.5 text-[13px] font-medium bg-neutral-900 text-white hover:bg-neutral-800 shadow-sm"
+        onClick={handleNewDesign}
+      >
+        <Plus className="h-3.5 w-3.5" />
+        New
       </Button>
 
       <Button
         variant="ghost"
         size="icon"
-        className="h-8 w-8"
+        className="h-8 w-8 text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100"
         onClick={handleSignOut}
         title="Sign out"
       >
-        <LogOut className="h-4 w-4" />
+        <LogOut className="h-3.5 w-3.5" />
       </Button>
     </div>
   );
