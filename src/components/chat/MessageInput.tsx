@@ -41,7 +41,7 @@ export function MessageInput({
           rows={3}
         />
         <div className="absolute bottom-3 right-3 flex items-center gap-2">
-          <span className="text-white/15 text-[11px] hidden sm:block">
+          <span className="text-white/45 text-[11px] hidden sm:block">
             {input.trim().length > 0 ? "↵ send" : "shift+↵ newline"}
           </span>
           <button
